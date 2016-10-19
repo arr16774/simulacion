@@ -177,60 +177,41 @@ public class graph {
 	}
 	
 	class Listener implements ActionListener{
-
+		private BD mydb = new BD();
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			 if (e.getSource() == btnAniadirGasto) {
-				 	String url = "jdbc:mysql://localhost/mydb";
-				 	String us="root";
-					String psw= "uvg";
-					
-				 	Connection conn = null;
-				 	try{
-						Class.forName("com.mysql.jdbc.Connection");
-						conn = (Connection)DriverManager.getConnection(url, us, psw);
-						if(conn != null)
-						{
-							System.out.println("Conexi-n a base de datos "+url+" . . . Ok");
-						}
-					}
-					catch(SQLException ex)
-					{
-						System.out.println("Hubo un problema al intentar conecarse a la base de datos"+url);
-					}
-					catch(ClassNotFoundException ex)
-					{
-						System.out.println(ex);
-					}	
-				 	
-				 	java.sql.Statement st = null;
-				 	
-				 	try {
-						st = conn.createStatement();
-					} catch (SQLException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}
-				 	
-				 	try{
-				 		int monto;
-				 		
-				 		String s;
-					 	s = "INSERT INTO Dinero VALUES (0,"+ textCant.getText() +" , '" + txtNombre.getText()+"', '"+ cmbTipo.getSelectedItem().toString() +"',"+ cmbDia.getSelectedItem().toString()+",'"+ cmbMes.getSelectedItem().toString()+"', 0 );";
-			        	try {
-							st.executeUpdate(s);
-						} catch (SQLException e1) {
+					 	
+					 	java.sql.Statement st = null;
+					 	Connection conn = mydb.getCon();
+					 	
+					 	try {
+							st = conn.createStatement();
+						} catch (SQLException e2) {
 							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							e2.printStackTrace();
 						}
-				 	} catch (Exception exc){
-				 		exc.printStackTrace();
-				 	}
-		        	
-		    }
+					 	
+					 	try{
+					 		int monto;
+					 		
+					 		String s;
+						 	s = "INSERT INTO Dinero VALUES (0,"+ textCant.getText() +" , '" + txtNombre.getText()+"', '"+ cmbTipo.getSelectedItem().toString() +"',"+ cmbDia.getSelectedItem().toString()+",'"+ cmbMes.getSelectedItem().toString()+"', 0 );";
+				        	try {
+								st.executeUpdate(s);
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+					 	} catch (Exception exc){
+					 		exc.printStackTrace();
+					 	}
+
+			 } 	
 			 if (e.getSource() == btnGraficar) {
+				 	
 				 	grafica.setVisible(true);
-		        	System.out.println("Pasa algo sasad");
+		        	System.out.println(mydb.prueba());
 		        }
 		        
 		     if (e.getSource() == btnVerDatos) {
@@ -242,12 +223,18 @@ public class graph {
 		        }
 		        
 		     if (e.getSource() == btnIngresarCantidad) {
-		        	int ingreso = Integer.parseInt(textIngreso.getText());
-		        	System.out.println("Pasa algo");
+		    	 	try{
+			        	int ingreso = Integer.parseInt(textIngreso.getText());
+			        	System.out.println("Pasa algo");
+		    	 	}
+		    	 	catch (Exception s){
+		    	 		
+		    	 	}
 		        }
+		
 		}
-	}
 
 	
+	}
 }	
 
